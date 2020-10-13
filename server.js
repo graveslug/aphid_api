@@ -52,14 +52,17 @@ app.use(logger('dev'))
 //         Routes             //
 //============================//
 // app.use('/users', users)
-app.get('/', (req, res, next) => {
-    res.status(200).json({
-        serverRoutesJs: "You requsted the index page"
-    })
-})
+
+//test route for initial setup
+// app.get('/', (req, res, next) => {
+//     res.status(200).json({
+//         serverRoutesJs: "You requsted the index page"
+//     })
+// })
 //============================//
 //         404 errors         //
 //============================//
+//errors when route cannot be be found
 app.use((req, res, next) => {
     const error = new Error('Not Found')
     error.status = 404
