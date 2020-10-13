@@ -33,7 +33,7 @@ const logger = require('morgan')
 //============================//
 //     Routes assigned        //
 //============================//
-//const users = require('./routes/users')
+const users = require('./routes/users')
 
 //============================//
 //        MiddleWare          //
@@ -51,7 +51,7 @@ app.use(logger('dev'))
 //============================//
 //         Routes             //
 //============================//
-// app.use('/users', users)
+app.use('/users', users)
 
 //test route for initial setup
 // app.get('/', (req, res, next) => {
