@@ -2,6 +2,9 @@ const User = require('../models/user')
 const Bug = require('../models/bug')
 
 module.exports = {
+//============================//
+//        User                //
+//============================//
     //finds user
     index: async (req, res, next) => {
         try {
@@ -61,6 +64,32 @@ module.exports = {
             res.json({deleteUser: error})
         }
     },
+//============================//
+//     User => Bug forum      //
+//============================//
+    getBug: async (req, res, next) => {
+        const userId = req.params.userId
+        const user = await User.findById(userId)
+        try{
+            res.status(200).json(user._bug)
+        }catch(error){
+            res.json({getBug: error})
+        }
+    },
 
+    newUserBug: async (req, res, next) => {
+        const userId = req.params.userId
+        const newBug = new Bug(req.body)
+        const user = await User.findById(userId)
+        try {
+            newBug._owner = user
+            await newBug.save()
+            user._bug.push(newBug)
+            await user.save()
+            res.status(200).json({ newUserBug: newBug })
+        }catch(error) {
+            res.json({ newUserBug: error })
+        }
+    }
 
 }

@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        _bugs: [
+        _bug: [
             {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Bug"

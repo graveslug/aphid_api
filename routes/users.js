@@ -13,10 +13,9 @@ router.route('/:userId')
     .patch(usersController.patchUser)
     .delete(usersController.deleteUser)
 
-// router.route('/:userId/bugs')
-//     .get()
-//     .post()
-
+router.route('/:userId/bugs')
+    .get(usersController.getUserBug)
+    .post(usersController.newUserBug)
 
 //!!!TODO!!!
 //for the user/bug delete route place that in the bugs route instead
