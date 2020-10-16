@@ -9,7 +9,7 @@ module.exports = {
     index: async (req, res, next) => {
         try {
             const users = await User.find({})
-            res.json({userIndex: user found})
+            res.json({userIndex: userFound})
         }catch(error) {
             res.json({userIndex: error})
         }
@@ -67,7 +67,7 @@ module.exports = {
 //============================//
 //     User => Bug forum      //
 //============================//
-    getBug: async (req, res, next) => {
+    getUserBug: async (req, res, next) => {
         const userId = req.params.userId
         const user = await User.findById(userId)
         try{
