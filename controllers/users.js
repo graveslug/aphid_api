@@ -9,7 +9,7 @@ module.exports = {
     index: async (req, res, next) => {
         try {
             const users = await User.find({})
-            res.json({userIndex: userFound})
+            res.json({userIndex: users})
         }catch(error) {
             res.json({userIndex: error})
         }
@@ -19,7 +19,7 @@ module.exports = {
         try {
             const newUser = await new User(req.body)
             const user = await newUser.save()
-            res.json({newUser: userPost})
+            res.json({newUser: user})
         } catch(error) {
             res.json({newUser: error})
         }
@@ -38,6 +38,7 @@ module.exports = {
         const replaceUser = req.params.userId
         const newUser = req.body
         try {
+            //!!!!postman shows the result as the original but changes are made!!!!
             const result = await User.findByIdAndUpdate(replaceUser, newUser)
             res.status(200).json({putUser: result})
         }catch(error){
@@ -50,6 +51,7 @@ module.exports = {
         const newUser = req.body
         try {
             const result = await User.findByIdAndUpdate(patchUser, newUser)
+            //!!!!postman shows the result as the original but changes are made!!!!
             res.status(200).json({patchUser: result})
         }catch(error){
             res.json({patchUser: error})
@@ -58,8 +60,8 @@ module.exports = {
 
     deleteUser: async (req, res, next) => {
         try {
-            const removedUser = User.remove({_id:req.params.userId})
-            res.status(200).json({deleteUser: "You've removed this user"})
+            const removedUser = await User.deleteOne({_id:req.params.userId})
+            res.status(200).json({removedUser: "Deleted the user"})
         }catch(error){
             res.json({deleteUser: error})
         }
@@ -67,6 +69,7 @@ module.exports = {
 //============================//
 //     User => Bug forum      //
 //============================//
+//this only grabs the reference ID of each bug through the user.
     getUserBug: async (req, res, next) => {
         const userId = req.params.userId
         const user = await User.findById(userId)
@@ -90,6 +93,36 @@ module.exports = {
         }catch(error) {
             res.json({ newUserBug: error })
         }
-    }
+    },
 
+    //this get route grabs the ID of bugs that correlated with the user(However if somebody had access to the ID of another users bug it can be retrieved to their side.) Might be a validation thing or perhaps I can do something like the deleteUserBugById and do a check.
+    getUserBugById: async (req, res, next) => {
+        // const userId = req.params.userId
+        const bugId = req.params.bugId
+        // const user = await User.findById(userId)
+        const bug = await Bug.findById(bugId)
+        try{
+            res.status(200).json({ getUserBugById: bug})
+        }catch(error){
+            res.json({ getUserBugById: error})
+        }
+    },
+
+    deleteUserBugById: async(req, res, next) => {
+        const bugId = req.params.bugId
+        const bug = await Bug.findById(bugId)
+        if(!bug) {
+            return res.status(404).json({deleteUserBugById: "Bug doesn't exist" })
+        }
+        const ownerId = bug._owner
+        const owner = await User.findById(ownerId)
+        try {
+            await bug.remove()
+            owner._bug.pull(bug)
+            await owner.save()
+            res.status(200).json({deleteUserBugById: "destroyed that file"})
+        }catch(error){
+            res.json({deleteUserBugById: error})
+        }
+    }
 }

@@ -1,7 +1,7 @@
 //============================//
 //      Dependencies          //
 //============================//
-require('dotenv').config
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -14,21 +14,21 @@ const logger = require('morgan')
 //============================//
 //   Database & connections   //
 //============================//
-// const MONGODB_URI = process.env.MONGODB_URI
-// const db = mongoose.connection
-//
-// mongoose.connect(MONGODB_URI, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-// })
-//
-// //checks error&&success
-// db.on('error', (err) => console.log(err.message + 'Is mongodb not running?'))
-// db.on('connected', ()=> console.log('Your mongod has connected'))
-// db.on('disconnected', ()=> console.log('Your mongod has disconnected'))
-//
-// //opens connection to mongod
-// db.on('open', ()=>{})
+const MONGODB_URI = process.env.MONGODB_URI
+const db = mongoose.connection
+
+mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+
+//checks error&&success
+db.on('error', (err) => console.log(err.message + 'Is mongodb not running?'))
+db.on('connected', ()=> console.log('Your mongod has connected'))
+db.on('disconnected', ()=> console.log('Your mongod has disconnected'))
+
+//opens connection to mongod
+db.on('open', ()=>{})
 
 //============================//
 //     Routes assigned        //

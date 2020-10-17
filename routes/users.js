@@ -17,6 +17,8 @@ router.route('/:userId/bugs')
     .get(usersController.getUserBug)
     .post(usersController.newUserBug)
 
-//!!!TODO!!!
-//for the user/bug delete route place that in the bugs route instead
+router.route('/:userId/bugs/:bugId')
+    .get(usersController.getUserBugById)
+    .delete(usersController.deleteUserBugById)
+
 module.exports = router
